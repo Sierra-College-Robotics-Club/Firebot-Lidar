@@ -46,6 +46,7 @@ def printRadial(q):
     while True:
         for x in range(0,360):
             if not q.empty():
+                a = q.get()
                 if a[x]:
                     theta = 2 * np.pi * x/360.0
                     r = a[x][0]
