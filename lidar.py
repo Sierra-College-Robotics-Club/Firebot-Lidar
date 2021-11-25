@@ -44,7 +44,7 @@ def plotRadial(q):
 
 def printRadial(q):
     while True:
-            if not q.empty():
+        if not q.empty():
             a = q.get()
             for x in range(0,360):
                 if a[x]:
