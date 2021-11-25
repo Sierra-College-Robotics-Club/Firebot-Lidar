@@ -42,7 +42,16 @@ def plotRadial(q):
             print "waiting"
         #time.sleep(0.00001) # do not hog the processor power
 
-
+def printRadial(q):
+    while true:
+        for x in range(0,360):
+            if not q.empty():
+                if a[x]:
+                    theta = 2 * np.pi * x/360.0
+                    r = a[x][0]
+                    print x, theta, r
+            else:
+                time.sleep(0.0001)
 
 def update_view( angle, data ):
     """Updates the view of a sample.
@@ -177,7 +186,8 @@ if __name__ == "__main__":
 
     ser = serial.Serial(com_port, baudrate)
     q = multiprocessing.Queue()
-    job_for_another_core = multiprocessing.Process(target=plotRadial,args=((q,)))
+    job_for_another_core = multiprocessing.Process(target=printRadial,args=((q,)))
+    #job_for_another_core = multiprocessing.Process(target=plotRadial,args=((q,)))
     job_for_another_core.start()
     read_Lidar()
     ser.close()
