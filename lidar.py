@@ -43,7 +43,7 @@ def plotRadial(q):
         #time.sleep(0.00001) # do not hog the processor power
 
 def printRadial(q):
-    while true:
+    while True:
         for x in range(0,360):
             if not q.empty():
                 if a[x]:
