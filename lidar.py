@@ -9,8 +9,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import multiprocessing
 import serial
-
-com_port = "/dev/cu.usbmodem12341" # This is on mac os x. For Windows/Linux: 5 == "COM6" == "/dev/tty5"
+com_port = "/dev/ttyS0"
+#com_port = "/dev/cu.usbmodem12341" # This is on mac os x. For Windows/Linux: 5 == "COM6" == "/dev/tty5"
 baudrate = 115200
 
 offset = 140
@@ -35,7 +35,9 @@ def plotRadial(q):
                     ax.scatter(2 * np.pi * x/360.0,a[x][0], cmap='hsv')
             # update ax.viewLim using the new dataLim
             plt.draw()
+	    #print "pause start"
             plt.pause(0.00000001)
+	    #print "pause end"
         else:
             print "waiting"
         #time.sleep(0.00001) # do not hog the processor power
@@ -64,6 +66,7 @@ Takes the angle (an int, from 0 to 359) and the list of four bytes of data in th
     #print datetime.datetime.now(),angle,dist_mm,quality
     dist_x = dist_mm*c
     dist_y = dist_mm*s
+    #print "update view called"
     if angle  >= 359:
         q.put(lidarData)
 
@@ -109,7 +112,7 @@ def read_Lidar():
                 # start byte
                 if b == 0xFA :
                     init_level = 1
-                    # print datetime.datetime.now(),lidarData
+                    #print datetime.datetime.now(),lidarData
                     #print "-----------------------------------"
                 else:
                     init_level = 0
@@ -119,12 +122,13 @@ def read_Lidar():
                 if b >= 0xA0 and b <= 0xF9 :
                     index = b - 0xA0
                     init_level = 2
+ 		    #print "init_level 2"
                 elif b != 0xFA:
                     init_level = 0
             elif init_level == 2 :
                 # speed
                 b_speed = [ ord(b) for b in ser.read(2)]
-                
+                #print "in 2"
                 # data
                 b_data0 = [ ord(b) for b in ser.read(4)]
                 b_data1 = [ ord(b) for b in ser.read(4)]
